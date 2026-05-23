@@ -1,154 +1,1043 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Freitas Web Design</title>
 
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>Freitas Web Design</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+html{
+scroll-behavior:smooth;
+}
+
+body{
+background:#f8fbff;
+color:#0f172a;
+overflow-x:hidden;
+}
+
+.container{
+width:90%;
+max-width:1250px;
+margin:auto;
+}
+
+header{
+position:fixed;
+top:0;
+width:100%;
+z-index:999;
+background:rgba(255,255,255,0.82);
+backdrop-filter:blur(14px);
+border-bottom:1px solid rgba(14,165,233,0.1);
+}
+
+.nav{
+height:85px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.logo{
+font-size:30px;
+font-weight:800;
+color:#0ea5e9;
+letter-spacing:-1px;
+}
+
+nav{
+display:flex;
+align-items:center;
+gap:28px;
+}
+
+nav a{
+text-decoration:none;
+color:#0f172a;
+font-weight:500;
+transition:0.3s;
+}
+
+nav a:hover{
+color:#0ea5e9;
+}
+
+.hero{
+min-height:100vh;
+display:flex;
+align-items:center;
+padding-top:120px;
+background:
+radial-gradient(circle at top left,#dbeafe 0%,transparent 35%),
+radial-gradient(circle at bottom right,#bae6fd 0%,transparent 35%),
+linear-gradient(to bottom right,#ffffff,#f0f9ff);
+}
+
+.hero-content{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:70px;
+align-items:center;
+}
+
+.badge{
+display:inline-flex;
+align-items:center;
+gap:10px;
+padding:12px 18px;
+background:#e0f2fe;
+color:#0284c7;
+border-radius:999px;
+font-weight:600;
+font-size:14px;
+margin-bottom:25px;
+}
+
+.hero h1{
+font-size:68px;
+line-height:1.05;
+margin-bottom:25px;
+letter-spacing:-2px;
+max-width:700px;
+}
+
+.hero p{
+font-size:18px;
+line-height:1.8;
+color:#475569;
+margin-bottom:35px;
+max-width:650px;
+}
+
+.hero-buttons{
+display:flex;
+gap:18px;
+flex-wrap:wrap;
+}
+
+.btn{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+padding:16px 30px;
+border-radius:18px;
+text-decoration:none;
+font-weight:600;
+transition:0.3s;
+}
+
+.btn-primary{
+background:#0ea5e9;
+color:white;
+box-shadow:0 15px 35px rgba(14,165,233,0.25);
+}
+
+.btn-primary:hover{
+transform:translateY(-4px);
+}
+
+.btn-secondary{
+border:2px solid #cbd5e1;
+color:#0f172a;
+background:white;
+}
+
+.hero-card{
+background:white;
+padding:35px;
+border-radius:32px;
+box-shadow:0 25px 60px rgba(15,23,42,0.08);
+border:1px solid rgba(14,165,233,0.08);
+}
+
+.hero-card img{
+width:100%;
+border-radius:24px;
+}
+
+section{
+padding:120px 0;
+}
+
+.section-title{
+font-size:48px;
+margin-bottom:18px;
+text-align:center;
+letter-spacing:-1px;
+}
+
+.section-description{
+text-align:center;
+max-width:700px;
+margin:auto;
+margin-bottom:70px;
+color:#64748b;
+font-size:17px;
+line-height:1.8;
+}
+
+.services-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:30px;
+}
+
+.service-card{
+background:white;
+padding:40px;
+border-radius:30px;
+box-shadow:0 15px 40px rgba(15,23,42,0.05);
+transition:0.3s;
+border:1px solid rgba(14,165,233,0.05);
+}
+
+.service-card:hover{
+transform:translateY(-8px);
+}
+
+.service-icon{
+width:70px;
+height:70px;
+border-radius:20px;
+background:#e0f2fe;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:30px;
+margin-bottom:25px;
+}
+
+.service-card h3{
+font-size:24px;
+margin-bottom:15px;
+}
+
+.service-card p{
+color:#64748b;
+line-height:1.8;
+}
+
+.projects{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+gap:30px;
+}
+
+.project-card{
+background:white;
+border-radius:30px;
+overflow:hidden;
+box-shadow:0 15px 45px rgba(15,23,42,0.06);
+transition:0.3s;
+}
+
+.project-card:hover{
+transform:translateY(-6px);
+}
+
+.project-card img{
+width:100%;
+height:240px;
+object-fit:cover;
+}
+
+.project-content{
+padding:28px;
+}
+
+.project-content h3{
+font-size:24px;
+margin-bottom:12px;
+}
+
+.project-content p{
+color:#64748b;
+line-height:1.7;
+margin-bottom:25px;
+}
+
+.project-content a{
+display:inline-flex;
+align-items:center;
+gap:10px;
+text-decoration:none;
+font-weight:600;
+color:#0ea5e9;
+}
+
+.contact-box{
+background:
+linear-gradient(135deg,#0ea5e9,#38bdf8);
+padding:70px;
+border-radius:40px;
+text-align:center;
+color:white;
+box-shadow:0 30px 60px rgba(14,165,233,0.2);
+}
+
+.contact-box h2{
+font-size:50px;
+margin-bottom:20px;
+}
+
+.contact-box p{
+max-width:700px;
+margin:auto;
+margin-bottom:35px;
+line-height:1.8;
+font-size:18px;
+opacity:0.95;
+}
+
+.contact-box a{
+display:inline-flex;
+padding:18px 35px;
+border-radius:18px;
+background:white;
+color:#0ea5e9;
+text-decoration:none;
+font-weight:700;
+}
+
+footer{
+padding:40px;
+text-align:center;
+border-top:1px solid rgba(14,165,233,0.1);
+color:#64748b;
+}
+
+.admin-toggle{
+position:fixed;
+left:25px;
+bottom:25px;
+background:#0ea5e9;
+color:white;
+padding:16px 22px;
+border-radius:18px;
+cursor:pointer;
+font-weight:600;
+z-index:9999;
+display:none;
+box-shadow:0 15px 35px rgba(14,165,233,0.25);
+}
+
+.sidebar-admin{
+position:fixed;
+left:-430px;
+top:0;
+width:420px;
+height:100vh;
+background:white;
+z-index:99999;
+padding:30px;
+overflow:auto;
+transition:0.4s;
+box-shadow:0 0 50px rgba(0,0,0,0.1);
+}
+
+.sidebar-admin.active{
+left:0;
+}
+
+.sidebar-admin h2{
+margin-bottom:25px;
+}
+
+.sidebar-admin input,
+.sidebar-admin textarea{
+width:100%;
+padding:16px;
+border:none;
+background:#f1f5f9;
+border-radius:16px;
+margin-bottom:15px;
+}
+
+.sidebar-admin textarea{
+min-height:130px;
+resize:none;
+}
+
+.sidebar-admin button{
+width:100%;
+padding:16px;
+border:none;
+border-radius:16px;
+background:#0ea5e9;
+color:white;
+font-weight:600;
+cursor:pointer;
+margin-bottom:15px;
+}
+
+.delete-btn{
+background:#ef4444 !important;
+}
+
+.login-modal{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.5);
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:999999;
+}
+
+.login-box{
+width:90%;
+max-width:420px;
+background:white;
+padding:35px;
+border-radius:28px;
+}
+
+.login-box h2{
+margin-bottom:20px;
+}
+
+.login-box input{
+width:100%;
+padding:16px;
+margin-bottom:15px;
+border:none;
+background:#f1f5f9;
+border-radius:16px;
+}
+
+.login-box button{
+width:100%;
+padding:16px;
+border:none;
+background:#0ea5e9;
+color:white;
+border-radius:16px;
+font-weight:600;
+cursor:pointer;
+}
+
+.admin-projects{
+margin-top:30px;
+}
+
+.admin-item{
+background:#f8fafc;
+padding:18px;
+border-radius:18px;
+margin-bottom:15px;
+}
+
+.admin-item h3{
+margin-bottom:15px;
+}
+
+@media(max-width:950px){
+
+.hero-content{
+grid-template-columns:1fr;
+}
+
+.hero h1{
+font-size:50px;
+}
+
+.contact-box{
+padding:50px 30px;
+}
+
+.contact-box h2{
+font-size:38px;
+}
+
+}
+
+@media(max-width:768px){
+
+nav{
+display:none;
+}
+
+.hero h1{
+font-size:40px;
+}
+
+.section-title{
+font-size:36px;
+}
+
+.sidebar-admin{
+width:100%;
+}
+
+}
+
+</style>
+
 </head>
 <body>
 
 <header>
-  <div class="container nav">
 
-    <h1>Freitas Web Design</h1>
+<div class="container nav">
 
-    <nav>
-      <a href="#inicio">Início</a>
-      <a href="#servicos">Serviços</a>
-      <a href="#projetos">Projetos</a>
-      <a href="#contato">Contato</a>
-    </nav>
+<div class="logo">
+Freitas Web Design
+</div>
 
-  </div>
+<nav>
+
+<a href="#inicio">Início</a>
+<a href="#servicos">Serviços</a>
+<a href="#projetos">Projetos</a>
+<a href="#contato">Contato</a>
+
+</nav>
+
+</div>
+
 </header>
 
 <section class="hero" id="inicio">
 
-  <div class="container hero-content">
+<div class="container hero-content">
 
-    <div>
-      <span class="badge">
-        Agência Web Profissional
-      </span>
+<div>
 
-      <h2>
-        Criamos sites modernos que realmente passam confiança
-      </h2>
+<div class="badge">
+🚀 Agência Web Profissional
+</div>
 
-      <p>
-        Desenvolvimento de sites profissionais, landing pages e identidades visuais modernas para empresas que querem crescer online.
-      </p>
+<h1>
+Criamos sites profissionais que realmente passam confiança
+</h1>
 
-      <div class="hero-buttons">
+<p>
+Desenvolvimento de sites modernos, landing pages e identidades visuais premium para empresas que querem crescer online e gerar mais clientes.
+</p>
 
-        <a class="btn primary"
-        href="https://wa.me/5517991758856"
-        target="_blank">
-        Falar no WhatsApp
-        </a>
+<div class="hero-buttons">
 
-        <a class="btn secondary"
-        href="https://instagram.com/freitaswebdesign"
-        target="_blank">
-        Instagram
-        </a>
+<a
+href="https://wa.me/5517991758856"
+target="_blank"
+class="btn btn-primary">
 
-      </div>
+Falar no WhatsApp
 
-    </div>
+</a>
 
-  </div>
+<a
+href="https://instagram.com/freitaswebdesign"
+target="_blank"
+class="btn btn-secondary">
 
-</section>
+Instagram
 
-<section class="services" id="servicos">
+</a>
 
-  <div class="container">
+</div>
 
-    <h2 class="section-title">
-      Serviços
-    </h2>
+</div>
 
-    <div class="grid">
+<div class="hero-card">
 
-      <div class="card">
-        <h3>Criação de Sites</h3>
+<img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1400&auto=format&fit=crop">
 
-        <p>
-          Sites modernos, rápidos e responsivos para sua empresa.
-        </p>
-      </div>
+</div>
 
-      <div class="card">
-        <h3>Landing Pages</h3>
-
-        <p>
-          Páginas focadas em conversão e captação de clientes.
-        </p>
-      </div>
-
-      <div class="card">
-        <h3>Criação de Logos</h3>
-
-        <p>
-          Identidade visual profissional para fortalecer sua marca.
-        </p>
-      </div>
-
-    </div>
-
-  </div>
+</div>
 
 </section>
 
-<section class="portfolio" id="projetos">
+<section id="servicos">
 
-  <div class="container">
+<div class="container">
 
-    <h2 class="section-title">
-      Projetos
-    </h2>
+<h2 class="section-title">
+Nossos Serviços
+</h2>
 
-    <div class="projects" id="projectsContainer">
+<p class="section-description">
+Criamos experiências digitais modernas, profissionais e estratégicas para empresas que querem se destacar no mercado.
+</p>
 
-    </div>
+<div class="services-grid">
 
-  </div>
+<div class="service-card">
+
+<div class="service-icon">
+💻
+</div>
+
+<h3>
+Criação de Sites
+</h3>
+
+<p>
+Sites modernos, rápidos e responsivos desenvolvidos para transmitir profissionalismo e gerar resultados reais.
+</p>
+
+</div>
+
+<div class="service-card">
+
+<div class="service-icon">
+🎨
+</div>
+
+<h3>
+Criação de Logos
+</h3>
+
+<p>
+Identidades visuais profissionais que fortalecem sua marca e aumentam a percepção de valor da sua empresa.
+</p>
+
+</div>
+
+<div class="service-card">
+
+<div class="service-icon">
+📈
+</div>
+
+<h3>
+Landing Pages
+</h3>
+
+<p>
+Páginas estratégicas focadas em conversão, captação de clientes e aumento de vendas online.
+</p>
+
+</div>
+
+</div>
+
+</div>
 
 </section>
 
-<section class="contact" id="contato">
+<section id="projetos">
 
-  <div class="container">
+<div class="container">
 
-    <h2 class="section-title">
-      Vamos criar seu projeto?
-    </h2>
+<h2 class="section-title">
+Projetos Recentes
+</h2>
 
-    <a class="big-whatsapp"
-    href="https://wa.me/5517991758856"
-    target="_blank">
-    Chamar no WhatsApp
-    </a>
+<p class="section-description">
+Alguns dos projetos desenvolvidos pela Freitas Web Design.
+</p>
 
-  </div>
+<div class="projects"
+id="projectsContainer">
+
+</div>
+
+</div>
+
+</section>
+
+<section id="contato">
+
+<div class="container">
+
+<div class="contact-box">
+
+<h2>
+Vamos criar seu projeto?
+</h2>
+
+<p>
+Entre em contato agora mesmo e transforme sua presença online com um site moderno, profissional e estratégico.
+</p>
+
+<a
+href="https://wa.me/5517991758856"
+target="_blank">
+
+Chamar no WhatsApp
+
+</a>
+
+</div>
+
+</div>
 
 </section>
 
 <footer>
 
-  <p>
-    © 2026 Freitas Web Design
-  </p>
+© 2026 Freitas Web Design — Todos os direitos reservados.
 
 </footer>
 
-<script type="module" src="script.js"></script>
+<div
+class="admin-toggle"
+id="adminToggle">
+
+Painel Admin
+
+</div>
+
+<div
+class="sidebar-admin"
+id="sidebarAdmin">
+
+<h2>
+Painel Admin
+</h2>
+
+<input
+type="text"
+id="titulo"
+placeholder="Nome do projeto">
+
+<textarea
+id="descricao"
+placeholder="Descrição do projeto"></textarea>
+
+<input
+type="text"
+id="link"
+placeholder="Link do projeto">
+
+<input
+type="file"
+id="imagem">
+
+<button onclick="salvarProjeto()">
+Publicar Projeto
+</button>
+
+<button
+class="delete-btn"
+onclick="logout()">
+
+Sair
+
+</button>
+
+<div
+class="admin-projects"
+id="adminProjects">
+
+</div>
+
+</div>
+
+<div
+class="login-modal"
+id="loginModal">
+
+<div class="login-box">
+
+<h2>
+Login Admin
+</h2>
+
+<input
+type="email"
+id="email"
+placeholder="Seu email">
+
+<input
+type="password"
+id="password"
+placeholder="Sua senha">
+
+<button onclick="login()">
+Entrar
+</button>
+
+</div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getAuth,
+signInWithEmailAndPassword,
+onAuthStateChanged,
+signOut
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+getFirestore,
+collection,
+addDoc,
+getDocs,
+deleteDoc,
+doc
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
+getStorage,
+ref,
+uploadBytes,
+getDownloadURL
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyB2n91JDJLDoINvYmGtHJwzZPeVB4rPZsM",
+
+authDomain: "freitas-web-design.firebaseapp.com",
+
+projectId: "freitas-web-design",
+
+storageBucket: "freitas-web-design.firebasestorage.app",
+
+messagingSenderId: "345222086620",
+
+appId: "1:345222086620:web:a92d7ed5615e5399c8d919"
+
+};
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+const db = getFirestore(app);
+
+const storage = getStorage(app);
+
+const sidebarAdmin =
+document.getElementById("sidebarAdmin");
+
+document.getElementById("adminToggle")
+.onclick = ()=>{
+
+sidebarAdmin.classList.toggle("active");
+
+}
+
+window.login = async function(){
+
+const email =
+document.getElementById("email").value;
+
+const password =
+document.getElementById("password").value;
+
+try{
+
+await signInWithEmailAndPassword(
+auth,
+email,
+password
+);
+
+}catch(error){
+
+alert("Login inválido");
+
+}
+
+}
+
+onAuthStateChanged(auth,(user)=>{
+
+if(user){
+
+document.getElementById("loginModal")
+.style.display = "none";
+
+document.getElementById("adminToggle")
+.style.display = "block";
+
+carregarProjetosAdmin();
+
+}else{
+
+document.getElementById("loginModal")
+.style.display = "none";
+
+document.getElementById("adminToggle")
+.style.display = "none";
+
+}
+
+});
+
+window.logout = async function(){
+
+await signOut(auth);
+
+location.reload();
+
+}
+
+window.salvarProjeto = async function(){
+
+const titulo =
+document.getElementById("titulo").value;
+
+const descricao =
+document.getElementById("descricao").value;
+
+const link =
+document.getElementById("link").value;
+
+const imagem =
+document.getElementById("imagem").files[0];
+
+if(!imagem){
+
+alert("Selecione uma imagem");
+
+return;
+
+}
+
+try{
+
+const storageRef =
+ref(storage,"projetos/" + imagem.name);
+
+await uploadBytes(storageRef,imagem);
+
+const imageUrl =
+await getDownloadURL(storageRef);
+
+await addDoc(collection(db,"projetos"),{
+
+titulo,
+descricao,
+link,
+imagem:imageUrl,
+criadoEm:new Date()
+
+});
+
+alert("Projeto publicado!");
+
+location.reload();
+
+}catch(error){
+
+console.log(error);
+
+alert("Erro ao publicar");
+
+}
+
+}
+
+async function carregarProjetos(){
+
+const projectsContainer =
+document.getElementById("projectsContainer");
+
+projectsContainer.innerHTML = "";
+
+const querySnapshot =
+await getDocs(collection(db,"projetos"));
+
+querySnapshot.forEach((project)=>{
+
+const data = project.data();
+
+projectsContainer.innerHTML += `
+
+<div class="project-card">
+
+<img src="${data.imagem}">
+
+<div class="project-content">
+
+<h3>${data.titulo}</h3>
+
+<p>${data.descricao}</p>
+
+<a href="${data.link}"
+target="_blank">
+
+Ver Projeto →
+
+</a>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+async function carregarProjetosAdmin(){
+
+const adminProjects =
+document.getElementById("adminProjects");
+
+adminProjects.innerHTML = "";
+
+const querySnapshot =
+await getDocs(collection(db,"projetos"));
+
+querySnapshot.forEach((project)=>{
+
+const data = project.data();
+
+adminProjects.innerHTML += `
+
+<div class="admin-item">
+
+<h3>
+${data.titulo}
+</h3>
+
+<button
+class="delete-btn"
+onclick="deletarProjeto('${project.id}')">
+
+Excluir Projeto
+
+</button>
+
+</div>
+
+`;
+
+});
+
+}
+
+window.deletarProjeto = async function(id){
+
+await deleteDoc(doc(db,"projetos",id));
+
+location.reload();
+
+}
+
+carregarProjetos();
+
+</script>
 
 </body>
 </html>
