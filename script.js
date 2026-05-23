@@ -151,7 +151,7 @@ document.getElementById("imagem").files;
 
 if(imagens.length === 0){
 
-alert("Selecione imagens");
+alert("Selecione pelo menos uma imagem");
 
 return;
 
@@ -168,7 +168,7 @@ const imagem = imagens[i];
 const storageRef =
 ref(
 storage,
-"projetos/" + Date.now() + imagem.name
+"projetos/" + Date.now() + "_" + imagem.name
 );
 
 await uploadBytes(storageRef,imagem);
@@ -192,13 +192,19 @@ criadoEm:new Date()
 
 alert("Projeto publicado!");
 
-location.reload();
+document.getElementById("titulo").value = "";
+document.getElementById("descricao").value = "";
+document.getElementById("link").value = "";
+document.getElementById("imagem").value = "";
+
+carregarProjetos();
+carregarProjetosAdmin();
 
 }catch(error){
 
 console.log(error);
 
-alert("Erro ao publicar");
+alert("Erro ao publicar projeto");
 
 }
 
