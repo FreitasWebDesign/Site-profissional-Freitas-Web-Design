@@ -6,53 +6,56 @@
   <title>Painel Admin</title>
 
   <style>
+
     *{
       margin:0;
       padding:0;
       box-sizing:border-box;
-      font-family:Arial;
+      font-family:Poppins;
     }
 
     body{
-      background:#f4f9ff;
+      background:#f7fbff;
       display:flex;
       justify-content:center;
       align-items:center;
-      height:100vh;
+      min-height:100vh;
+      padding:30px;
     }
 
-    .login-box{
+    .box{
+      width:100%;
+      max-width:500px;
       background:white;
       padding:40px;
-      border-radius:20px;
-      width:350px;
-      box-shadow:0 10px 40px rgba(0,0,0,0.1);
+      border-radius:24px;
+      box-shadow:0 10px 40px rgba(0,0,0,0.08);
     }
 
     h1{
-      margin-bottom:20px;
+      margin-bottom:25px;
       color:#0f172a;
     }
 
     input{
       width:100%;
-      padding:14px;
-      margin-bottom:15px;
+      padding:15px;
       border:none;
       background:#f1f5f9;
-      border-radius:10px;
+      border-radius:12px;
+      margin-bottom:15px;
     }
 
     button{
       width:100%;
-      padding:14px;
+      padding:15px;
       border:none;
-      background:#38bdf8;
+      border-radius:12px;
+      background:#0ea5e9;
       color:white;
-      border-radius:10px;
+      font-weight:600;
       cursor:pointer;
-      font-size:16px;
-      font-weight:bold;
+      margin-bottom:15px;
     }
 
     .painel{
@@ -63,35 +66,76 @@
 </head>
 <body>
 
-<div class="login-box" id="loginBox">
-  <h1>Admin Login</h1>
+<div class="box" id="loginBox">
 
-  <input type="email" id="email" placeholder="Seu email">
-  <input type="password" id="password" placeholder="Sua senha">
+  <h1>Login Admin</h1>
 
-  <button onclick="login()">Entrar</button>
+  <input type="email"
+  id="email"
+  placeholder="Seu email">
+
+  <input type="password"
+  id="password"
+  placeholder="Sua senha">
+
+  <button onclick="login()">
+    Entrar
+  </button>
+
 </div>
 
-<div class="login-box painel" id="painel">
+<div class="box painel" id="painel">
+
   <h1>Painel Admin</h1>
 
-  <p>Login realizado com sucesso.</p>
+  <input type="text"
+  id="titulo"
+  placeholder="Nome do projeto">
 
-  <br>
+  <input type="text"
+  id="link"
+  placeholder="Link do projeto">
 
-  <button onclick="logout()">Sair</button>
+  <input type="file"
+  id="imagem">
+
+  <button onclick="salvarProjeto()">
+    Salvar Projeto
+  </button>
+
+  <button onclick="logout()">
+    Sair
+  </button>
+
 </div>
 
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
   getAuth,
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+  getFirestore,
+  addDoc,
+  collection
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB2n91JDJLDoINvYmGtHJwzZPeVB4rPZsM",
@@ -104,16 +148,28 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+
 const auth = getAuth(app);
+
+const db = getFirestore(app);
+
+const storage = getStorage(app);
 
 window.login = async function(){
 
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
+  const email =
+  document.getElementById("email").value;
+
+  const password =
+  document.getElementById("password").value;
 
   try{
 
-    await signInWithEmailAndPassword(auth,email,password);
+    await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
 
   }catch(error){
 
@@ -127,13 +183,19 @@ onAuthStateChanged(auth,(user)=>{
 
   if(user){
 
-    document.getElementById('loginBox').style.display = 'none';
-    document.getElementById('painel').style.display = 'block';
+    document.getElementById("loginBox")
+    .style.display = "none";
+
+    document.getElementById("painel")
+    .style.display = "block";
 
   }else{
 
-    document.getElementById('loginBox').style.display = 'block';
-    document.getElementById('painel').style.display = 'none';
+    document.getElementById("loginBox")
+    .style.display = "block";
+
+    document.getElementById("painel")
+    .style.display = "none";
 
   }
 
@@ -142,6 +204,56 @@ onAuthStateChanged(auth,(user)=>{
 window.logout = async function(){
 
   await signOut(auth);
+
+}
+
+window.salvarProjeto = async function(){
+
+  const titulo =
+  document.getElementById("titulo").value;
+
+  const link =
+  document.getElementById("link").value;
+
+  const imagem =
+  document.getElementById("imagem").files[0];
+
+  if(!imagem){
+
+    alert("Selecione uma imagem");
+
+    return;
+
+  }
+
+  try{
+
+    const storageRef =
+    ref(storage,"projetos/" + imagem.name);
+
+    await uploadBytes(storageRef,imagem);
+
+    const imageUrl =
+    await getDownloadURL(storageRef);
+
+    await addDoc(collection(db,"projetos"),{
+
+      titulo,
+      link,
+      imagem:imageUrl,
+      criadoEm:new Date()
+
+    });
+
+    alert("Projeto salvo!");
+
+  }catch(error){
+
+    console.log(error);
+
+    alert("Erro ao salvar projeto");
+
+  }
 
 }
 
