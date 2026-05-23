@@ -175,9 +175,9 @@ return;
 
 }
 
-let imagensUrls = [];
-
 try{
+
+let imagensUrls = [];
 
 if(imagens.length > 0){
 
@@ -187,9 +187,11 @@ const imagem = imagens[i];
 
 const reader = new FileReader();
 
-const base64 = await new Promise((resolve)=>{
+const base64 = await new Promise((resolve,reject)=>{
 
 reader.onload = () => resolve(reader.result);
+
+reader.onerror = reject;
 
 reader.readAsDataURL(imagem);
 
@@ -206,7 +208,7 @@ await addDoc(collection(db,"projetos"),{
 titulo,
 descricao,
 link,
-imagens: imagensUrls,
+imagens: imagensUrls || [],
 criadoEm: new Date()
 
 });
@@ -264,6 +266,12 @@ projectsContainer.innerHTML += `
 
 <div class="project-card">
 
+${
+imagens.length > 0
+?
+
+`
+
 <div class="project-gallery">
 
 ${imagens.map(img => `
@@ -273,6 +281,22 @@ ${imagens.map(img => `
 `).join('')}
 
 </div>
+
+`
+
+:
+
+`
+
+<div class="project-gallery">
+
+<img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1400&auto=format&fit=crop" alt="${data.titulo}">
+
+</div>
+
+`
+
+}
 
 <div class="project-content">
 
