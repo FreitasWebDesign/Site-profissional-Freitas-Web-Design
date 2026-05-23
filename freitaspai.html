@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel Admin</title>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial;
+    }
+
+    body{
+      background:#f4f9ff;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      height:100vh;
+    }
+
+    .login-box{
+      background:white;
+      padding:40px;
+      border-radius:20px;
+      width:350px;
+      box-shadow:0 10px 40px rgba(0,0,0,0.1);
+    }
+
+    h1{
+      margin-bottom:20px;
+      color:#0f172a;
+    }
+
+    input{
+      width:100%;
+      padding:14px;
+      margin-bottom:15px;
+      border:none;
+      background:#f1f5f9;
+      border-radius:10px;
+    }
+
+    button{
+      width:100%;
+      padding:14px;
+      border:none;
+      background:#38bdf8;
+      color:white;
+      border-radius:10px;
+      cursor:pointer;
+      font-size:16px;
+      font-weight:bold;
+    }
+
+    .painel{
+      display:none;
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="login-box" id="loginBox">
+  <h1>Admin Login</h1>
+
+  <input type="email" id="email" placeholder="Seu email">
+  <input type="password" id="password" placeholder="Sua senha">
+
+  <button onclick="login()">Entrar</button>
+</div>
+
+<div class="login-box painel" id="painel">
+  <h1>Painel Admin</h1>
+
+  <p>Login realizado com sucesso.</p>
+
+  <br>
+
+  <button onclick="logout()">Sair</button>
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB2n91JDJLDoINvYmGtHJwzZPeVB4rPZsM",
+  authDomain: "freitas-web-design.firebaseapp.com",
+  projectId: "freitas-web-design",
+  storageBucket: "freitas-web-design.firebasestorage.app",
+  messagingSenderId: "345222086620",
+  appId: "1:345222086620:web:a92d7ed5615e5399c8d919",
+  measurementId: "G-E230C8P0D9"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+window.login = async function(){
+
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+
+  try{
+
+    await signInWithEmailAndPassword(auth,email,password);
+
+  }catch(error){
+
+    alert("Erro ao entrar");
+
+  }
+
+}
+
+onAuthStateChanged(auth,(user)=>{
+
+  if(user){
+
+    document.getElementById('loginBox').style.display = 'none';
+    document.getElementById('painel').style.display = 'block';
+
+  }else{
+
+    document.getElementById('loginBox').style.display = 'block';
+    document.getElementById('painel').style.display = 'none';
+
+  }
+
+});
+
+window.logout = async function(){
+
+  await signOut(auth);
+
+}
+
+</script>
+
+</body>
+</html>
