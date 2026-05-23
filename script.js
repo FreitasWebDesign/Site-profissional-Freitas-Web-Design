@@ -15,7 +15,9 @@ collection,
 addDoc,
 getDocs,
 deleteDoc,
-doc
+doc,
+query,
+orderBy
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -60,6 +62,12 @@ document.getElementById("adminToggle");
 const sidebarAdmin =
 document.getElementById("sidebarAdmin");
 
+const projectsContainer =
+document.getElementById("projectsContainer");
+
+const adminProjects =
+document.getElementById("adminProjects");
+
 adminToggle.onclick = ()=>{
 
 sidebarAdmin.classList.toggle("active");
@@ -68,7 +76,11 @@ sidebarAdmin.classList.toggle("active");
 
 document.addEventListener("keydown",(e)=>{
 
-if(e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "a"){
+if(
+e.ctrlKey &&
+e.shiftKey &&
+e.key.toLowerCase() === "a"
+){
 
 loginModal.style.display = "flex";
 
@@ -76,7 +88,8 @@ loginModal.style.display = "flex";
 
 });
 
-document.getElementById("secretTrigger")
+document
+.getElementById("secretTrigger")
 .addEventListener("dblclick",()=>{
 
 loginModal.style.display = "flex";
@@ -91,6 +104,14 @@ document.getElementById("email").value;
 const password =
 document.getElementById("password").value;
 
+if(!email || !password){
+
+alert("Preencha email e senha");
+
+return;
+
+}
+
 try{
 
 await signInWithEmailAndPassword(
@@ -99,7 +120,11 @@ email,
 password
 );
 
+loginModal.style.display = "none";
+
 }catch(error){
+
+console.log(error);
 
 alert("Login inválido");
 
@@ -110,8 +135,6 @@ alert("Login inválido");
 onAuthStateChanged(auth,(user)=>{
 
 if(user){
-
-loginModal.style.display = "none";
 
 adminToggle.style.display = "flex";
 
@@ -131,6 +154,8 @@ window.logout = async function(){
 
 await signOut(auth);
 
+sidebarAdmin.classList.remove("active");
+
 location.reload();
 
 }
@@ -138,16 +163,24 @@ location.reload();
 window.salvarProjeto = async function(){
 
 const titulo =
-document.getElementById("titulo").value;
+document.getElementById("titulo").value.trim();
 
 const descricao =
-document.getElementById("descricao").value;
+document.getElementById("descricao").value.trim();
 
 const link =
-document.getElementById("link").value;
+document.getElementById("link").value.trim();
 
 const imagens =
 document.getElementById("imagem").files;
+
+if(!titulo || !descricao || !link){
+
+alert("Preencha todos os campos");
+
+return;
+
+}
 
 if(imagens.length === 0){
 
@@ -165,10 +198,9 @@ for(let i = 0; i < imagens.length; i++){
 
 const imagem = imagens[i];
 
-const storageRef =
-ref(
+const storageRef = ref(
 storage,
-"projetos/" + Date.now() + "_" + imagem.name
+`projetos/${Date.now()}_${imagem.name}`
 );
 
 await uploadBytes(storageRef,imagem);
@@ -186,19 +218,23 @@ titulo,
 descricao,
 link,
 imagens: imagensUrls,
-criadoEm:new Date()
+criadoEm: new Date()
 
 });
 
-alert("Projeto publicado!");
+alert("Projeto publicado com sucesso!");
 
 document.getElementById("titulo").value = "";
+
 document.getElementById("descricao").value = "";
+
 document.getElementById("link").value = "";
+
 document.getElementById("imagem").value = "";
 
-carregarProjetos();
-carregarProjetosAdmin();
+await carregarProjetos();
+
+await carregarProjetosAdmin();
 
 }catch(error){
 
@@ -212,17 +248,28 @@ alert("Erro ao publicar projeto");
 
 async function carregarProjetos(){
 
-const projectsContainer =
-document.getElementById("projectsContainer");
-
 projectsContainer.innerHTML = "";
 
+try{
+
+const projetosRef =
+collection(db,"projetos");
+
+const q =
+query(
+projetosRef,
+orderBy("criadoEm","desc")
+);
+
 const querySnapshot =
-await getDocs(collection(db,"projetos"));
+await getDocs(q);
 
 querySnapshot.forEach((project)=>{
 
 const data = project.data();
+
+const imagens =
+data.imagens || [];
 
 projectsContainer.innerHTML += `
 
@@ -230,9 +277,9 @@ projectsContainer.innerHTML += `
 
 <div class="project-gallery">
 
-${data.imagens.map(img => `
+${imagens.map(img => `
 
-<img src="${img}">
+<img src="${img}" alt="${data.titulo}">
 
 `).join('')}
 
@@ -244,7 +291,9 @@ ${data.imagens.map(img => `
 
 <p>${data.descricao}</p>
 
-<a href="${data.link}" target="_blank">
+<a
+href="${data.link}"
+target="_blank">
 
 Ver Projeto →
 
@@ -258,14 +307,19 @@ Ver Projeto →
 
 });
 
+}catch(error){
+
+console.log(error);
+
+}
+
 }
 
 async function carregarProjetosAdmin(){
 
-const adminProjects =
-document.getElementById("adminProjects");
-
 adminProjects.innerHTML = "";
+
+try{
 
 const querySnapshot =
 await getDocs(collection(db,"projetos"));
@@ -296,13 +350,38 @@ Excluir Projeto
 
 });
 
+}catch(error){
+
+console.log(error);
+
+}
+
 }
 
 window.deletarProjeto = async function(id){
 
-await deleteDoc(doc(db,"projetos",id));
+const confirmar =
+confirm("Deseja excluir este projeto?");
 
-location.reload();
+if(!confirmar) return;
+
+try{
+
+await deleteDoc(
+doc(db,"projetos",id)
+);
+
+await carregarProjetos();
+
+await carregarProjetosAdmin();
+
+}catch(error){
+
+console.log(error);
+
+alert("Erro ao excluir");
+
+}
 
 }
 
