@@ -21,14 +21,6 @@ orderBy
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-import {
-getStorage,
-ref,
-uploadBytes,
-getDownloadURL
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
-
 const firebaseConfig = {
 
 apiKey: "AIzaSyB2n91JDJLDoINvYmGtHJwzZPeVB4rPZsM",
@@ -37,7 +29,7 @@ authDomain: "freitas-web-design.firebaseapp.com",
 
 projectId: "freitas-web-design",
 
-storageBucket: "freitas-web-design.firebasestorage.app",
+storageBucket: "freitas-web-design.appspot.com",
 
 messagingSenderId: "345222086620",
 
@@ -50,8 +42,6 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 const db = getFirestore(app);
-
-const storage = getStorage(app);
 
 const loginModal =
 document.getElementById("loginModal");
@@ -171,8 +161,11 @@ document.getElementById("descricao").value.trim();
 const link =
 document.getElementById("link").value.trim();
 
+const imagemInput =
+document.getElementById("imagem");
+
 const imagens =
-document.getElementById("imagem").files;
+imagemInput.files;
 
 if(!titulo || !descricao || !link){
 
@@ -182,33 +175,29 @@ return;
 
 }
 
-if(imagens.length === 0){
-
-alert("Selecione pelo menos uma imagem");
-
-return;
-
-}
+let imagensUrls = [];
 
 try{
 
-let imagensUrls = [];
+if(imagens.length > 0){
 
 for(let i = 0; i < imagens.length; i++){
 
 const imagem = imagens[i];
 
-const storageRef = ref(
-storage,
-`projetos/${Date.now()}_${imagem.name}`
-);
+const reader = new FileReader();
 
-await uploadBytes(storageRef,imagem);
+const base64 = await new Promise((resolve)=>{
 
-const imageUrl =
-await getDownloadURL(storageRef);
+reader.onload = () => resolve(reader.result);
 
-imagensUrls.push(imageUrl);
+reader.readAsDataURL(imagem);
+
+});
+
+imagensUrls.push(base64);
+
+}
 
 }
 
@@ -230,7 +219,7 @@ document.getElementById("descricao").value = "";
 
 document.getElementById("link").value = "";
 
-document.getElementById("imagem").value = "";
+imagemInput.value = "";
 
 await carregarProjetos();
 
